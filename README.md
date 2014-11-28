@@ -3,7 +3,7 @@ Fontinator
 
 ![alt tag](http://morrox.de/fontinator/mascot_animated.gif)
 
-Fontinator is an Android-Library that make it simply esay to user coustom Fonts.
+Fontinator is an Android-Library that make it simply easy to use custom Fonts.
 
 ### Version
   1.0
