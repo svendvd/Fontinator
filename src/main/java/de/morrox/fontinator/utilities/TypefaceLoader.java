@@ -53,9 +53,7 @@ public class TypefaceLoader {
 
     public TypefaceLoader(TextView view, Context context, AttributeSet attrs) {
         this.view = view;
-        if (!view.isInEditMode()) {
-            setTypeFace(context, attrs);
-        }
+        setTypeFace(context, attrs);
     }
 
     private static LruCache<String, Typeface> sTypefaceCache = new LruCache<String, Typeface>(12);
@@ -84,7 +82,9 @@ public class TypefaceLoader {
             String typefaceName = a.getString(R.styleable.Typefaceable_font);
             if (typefaceName != null && !TextUtils.isEmpty(typefaceName)) {
                 Typeface typeface = TypefaceLoader.get(context, typefaceName);
-                view.setTypeface(typeface);
+                if (!view.isInEditMode()) {
+                    view.setTypeface(typeface);
+                }
                 view.setPaintFlags(view.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
             }
         } finally {
