@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Typefaceable">
+        <attr name="font" format="string"/>
+        <attr name="letterSpace" format="float"/>
+        <attr name="textTransform">
+            <enum name="none" value="0"/>
+            <enum name="uppercase" value="1"/>
+            <enum name="lowercase" value="2"/>
+        </attr>
+        <attr name="html" format="boolean"/>
+    </declare-styleable>
+</resources>
