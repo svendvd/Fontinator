@@ -67,7 +67,7 @@ dependencies {
 
 ### How it works
 
-Fontinator extend TextView based Android Widgets like the Button to inject a Fontface loader
+Fontinator extend TextView based Android Widgets like the Button to inject a Cached Fontface loader
 
 ### Issues
 Please Note that the Android Layout Editor currently can't Preview Custom Fonts
