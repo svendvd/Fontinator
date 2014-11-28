@@ -3,16 +3,26 @@ Fontinator
 
 ![alt tag](http://morrox.de/fontinator/mascot_animated.gif)
 
-Fontinator is a custom fontable Android-Widgets Library
+Fontinator is an Android-Library that make it simply esay to user coustom Fonts.
 
 ### Version
   1.0
 
 ### How to Use:
 
-1. Add fonts to the assets/fonts folder
+1. Add fonts to the /assets/fonts folder of your Android Studio Project
 
-2. Replace Android Widgets in Layout XML with the Fontinator Widgets
+2. Import this Project as Module
+
+3. add compile project(':fontinator') to your Application Gradle file
+```
+dependencies {
+    compile project(':fontinator')
+    ...
+}
+```
+
+4. Replace Android Widgets in Layout XML with the Fontinator Widgets
 
   For Example simply replace:
   ```xml
@@ -53,15 +63,19 @@ Fontinator is a custom fontable Android-Widgets Library
     letterSpace="1.4"
   ```
 
-3. Enjoy Fonted Widgets
+5. Enjoy Fonted Widgets
+
+### How it works
+
+Fontinator Extend TextView based the Android Widgets like the Button and Inject a Fontface loader
 
 ### Issues
 Please Note that the Android Layout Editor currently can't Preview Custom Fonts
 
-### Make Custom Widgets from TextView
-Option 1, simply extend from FontTextView
+### Make Custom Widgets from a TextView based Widget
+Option 1: simply extend
 
-Option 2, Use TypefaceLoader and Typefaceable Interface
+Option 2: Use TypefaceLoader and Typefaceable Interface
 ```java
 import de.morrox.fontinator.utilities.TypefaceLoader;
 import de.morrox.fontinator.utilities.Typefaceable;
