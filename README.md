@@ -36,11 +36,13 @@ Fontinator is a custom fontable Android-Widgets Libary
     ...
     />
   ```
-    Used font file from /assets/fonts/ (use splited fonts without android:textStyle=bold!)
+
+
+    Set font file from /assets/fonts/ (use splited fonts without android:textStyle=bold!)
   ```xml
     font="My Custom Font Bold.otf"
   ```
-    Replace textAllCaps=true with textTransform=uppercase
+    Replace textAllCaps=true with
   ```xml
     textTransform="uppercase"
   ```
@@ -52,7 +54,7 @@ Fontinator is a custom fontable Android-Widgets Libary
 3. Enjoy Fonted Widgets
 
 ### Issues
-Please Note that die Layout Editor currently can't Preview Custom Fonts
+Please Note that the Android Layout Editor currently can't Preview Custom Fonts
 
 ### Make Custom Widgets from TextView
 Option 1, simply extend from FontTextView
