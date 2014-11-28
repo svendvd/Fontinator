@@ -1,6 +1,8 @@
 Fontinator
 ==========
 
+![alt tag](http://morrox.de/fontinator/mascot.gif)
+
 Fontinator is a custom fontable Android-Widgets Libary
 
 ### Version
