@@ -3,7 +3,7 @@ Fontinator
 
 ![alt tag](http://morrox.de/fontinator/mascot_animated.gif)
 
-Fontinator is a custom fontable Android-Widgets Libary
+Fontinator is a custom fontable Android-Widgets Library
 
 ### Version
   1.0
@@ -48,7 +48,7 @@ Fontinator is a custom fontable Android-Widgets Libary
   ```xml
     textTransform="uppercase"
   ```
-    [Optional] Add LatterSpace
+    [Optional] Add LetterSpace
   ```xml
     letterSpace="1.4"
   ```
@@ -83,5 +83,4 @@ public class MyCustomFontButton extends Button implements Typefaceable{
 }
 
     ```
-
 
