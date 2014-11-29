@@ -97,6 +97,7 @@ public class TypefaceLoader {
         switch (textTransform){
             case LOWERCASE:
                 src = src.toString().toLowerCase();
+                break;
             case UPPERCASE:
                 src = src.toString().toUpperCase();
 
