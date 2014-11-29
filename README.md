@@ -22,48 +22,52 @@ dependencies {
 }
 ```
 
-4. Replace Android Widgets in Layout XML with the Fontinator Widgets
+4. add xmlns:app to the XML root
+```xml
+xmlns:app="http://schemas.android.com/apk/res-auto"
+```
+5. Replace Android Widgets in Layout XML with the Fontinator Widgets
 
-  For Example simply replace:
-  ```xml
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textAllCaps="true"
-    android:textStyle="bold"
-    android:text="@string/hello_world"
-    android:textColor="@android:color/black"
-    ... />
-  ```
-  whit this XML Code
-  ```xml
-  <de.morrox.fontinator.FontTextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    font="My Custom Font Bold.otf"
-    textTransform="uppercase"
-    letterSpace="1.4"
-    android:text="@string/hello_world"
-    android:textColor="@android:color/black"
-    ...
-    />
-  ```
+For Example simply replace:
+```xml
+<TextView
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:textAllCaps="true"
+  android:textStyle="bold"
+  android:text="@string/hello_world"
+  android:textColor="@android:color/black"
+  ... />
+```
+whit this XML Code
+```xml
+<de.morrox.fontinator.FontTextView
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  app:font="My Custom Font Bold.otf"
+  app:textTransform="uppercase"
+  app:letterSpace="1.4"
+  android:text="@string/hello_world"
+  android:textColor="@android:color/black"
+  ...
+  />
+```
 
 
-    Set font file from /assets/fonts/ (use splited fonts without android:textStyle=bold!)
-  ```xml
-    font="My Custom Font Bold.otf"
-  ```
-    Replace textAllCaps=true with
-  ```xml
-    textTransform="uppercase"
-  ```
-    [Optional] Add LetterSpace
-  ```xml
-    letterSpace="1.4"
-  ```
+  To set font file from /assets/fonts/ (use splited fonts without android:textStyle!)
+```xml
+  font="My Custom Font Bold.otf"
+```
+  Replace textAllCaps=true with
+```xml
+  textTransform="uppercase"
+```
+  [Optional] Add LetterSpace
+```xml
+  letterSpace="1.4"
+```
 
-5. Enjoy Fonted Widgets
+6. Enjoy Fonted Widgets
 
 ### How it works
 
