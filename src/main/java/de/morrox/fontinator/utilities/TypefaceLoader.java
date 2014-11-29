@@ -82,9 +82,7 @@ public class TypefaceLoader {
             String typefaceName = a.getString(R.styleable.Typefaceable_font);
             if (typefaceName != null && !TextUtils.isEmpty(typefaceName)) {
                 Typeface typeface = TypefaceLoader.get(context, typefaceName);
-                if (!view.isInEditMode()) {
-                    view.setTypeface(typeface);
-                }
+                view.setTypeface(typeface);
                 view.setPaintFlags(view.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
             }
         } finally {
