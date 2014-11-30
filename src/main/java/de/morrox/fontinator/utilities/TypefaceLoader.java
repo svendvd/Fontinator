@@ -100,6 +100,7 @@ public class TypefaceLoader {
                 break;
             case UPPERCASE:
                 src = src.toString().toUpperCase();
+                break;
 
         }
         if(letterSpace != NO_LETTER_SPACE && src != null) {

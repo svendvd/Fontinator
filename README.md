@@ -10,11 +10,11 @@ Fontinator is an Android-Library that make it simply easy to use custom Fonts.
 
 ### How to Use:
 
-1. Add fonts to the /assets/fonts folder of your Android Studio Project
+##### 1. Add fonts to the /assets/fonts folder of your Android Studio Project
 
-2. Import this Project as Module
+##### 2. Import this Project as Module
 
-3. add compile project(':fontinator') to your Application Gradle file
+##### 3. add compile project(':fontinator') to your Application Gradle file
 ```
 dependencies {
     compile project(':fontinator')
@@ -22,11 +22,13 @@ dependencies {
 }
 ```
 
-4. add xmlns:app to the XML root
+##### 4. add xmlns:app to the Layout XML root
+
 ```xml
 xmlns:app="http://schemas.android.com/apk/res-auto"
 ```
-5. Replace Android Widgets in Layout XML with the Fontinator Widgets
+
+##### 5. Replace Android Widgets in Layout XML with the Fontinator Widgets
 
 For Example simply replace:
 ```xml
@@ -39,7 +41,9 @@ For Example simply replace:
   android:textColor="@android:color/black"
   ... />
 ```
+
 whit this XML Code
+
 ```xml
 <de.morrox.fontinator.FontTextView
   android:layout_width="wrap_content"
@@ -52,7 +56,6 @@ whit this XML Code
   ...
   />
 ```
-
 
   To set font file from /assets/fonts/ (use splited fonts without android:textStyle!)
 ```xml
@@ -67,7 +70,7 @@ whit this XML Code
   letterSpace="1.4"
 ```
 
-6. Enjoy Fonted Widgets
+#####6. Enjoy Fonted Widgets
 
 ### How it works
 
