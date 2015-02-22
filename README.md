@@ -70,7 +70,7 @@ whit this XML Code
   letterSpace="1.4"
 ```
 
-#####6. Enjoy Fonted Widgets
+##### 6. Enjoy Fonted Widgets
 
 ### How it works
 

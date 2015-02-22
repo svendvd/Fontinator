@@ -1,7 +1,6 @@
 package de.morrox.fontinator.utilities;
 
 /**
- * Created by sven on 28.11.14.
+ * Dummy Interface used for Styleables
  */
-public interface Typefaceable {
-}
+public interface Typefaceable {}

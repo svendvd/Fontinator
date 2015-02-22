@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -11,17 +12,17 @@ import android.text.TextUtils;
 import android.text.style.ScaleXSpan;
 import android.util.AttributeSet;
 import android.util.LruCache;
+import android.util.Pair;
+import android.view.View;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.morrox.fontinator.R;
 
 
-/**
- * Created by sven on 11.08.14.
- */
 public class TypefaceLoader {
     public static enum TRANSFORM {
         NONE(0),
@@ -46,19 +47,25 @@ public class TypefaceLoader {
 
     public static final float NO_LETTER_SPACE = -9999;
 
-    private TextView view;
+    private final WeakReference<TextView> view;
+
     private float letterSpace = NO_LETTER_SPACE;
     private TRANSFORM textTransform = null;
     private boolean isHtml = false;
 
     public TypefaceLoader(TextView view, Context context, AttributeSet attrs) {
-        this.view = view;
+        this.view = new WeakReference<TextView>(view);
         setTypeFace(context, attrs);
     }
 
     private static LruCache<String, Typeface> sTypefaceCache = new LruCache<String, Typeface>(12);
 
-    public static Typeface get(Context context, String typefaceName) {
+    public static TypefaceLoader get(TextView view, Context context, AttributeSet attrs){
+        return new TypefaceLoader(view, context, attrs);
+    }
+
+
+    private static Typeface getTypeface(Context context, String typefaceName) {
         try {
             Typeface typeface = sTypefaceCache.get(typefaceName);
             if (typeface == null) {
@@ -72,7 +79,17 @@ public class TypefaceLoader {
         }
     }
 
+    public static Pair<CharSequence, TextView.BufferType> inject(TypefaceLoader typefaceLoader, CharSequence src, TextView.BufferType type){
+        if(typefaceLoader == null){
+            return new Pair<CharSequence, TextView.BufferType>(src, type);
+        }else{
+            return typefaceLoader.createLetterSpacing(src, type);
+        }
+    }
+
     private void setTypeFace(Context context, AttributeSet attrs) {
+
+        TextView view = this.view.get();
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.Typefaceable, 0, 0);
         try {
             isHtml        = a.getBoolean(R.styleable.Typefaceable_html, false);
@@ -81,7 +98,7 @@ public class TypefaceLoader {
 
             String typefaceName = a.getString(R.styleable.Typefaceable_font);
             if (typefaceName != null && !TextUtils.isEmpty(typefaceName)) {
-                Typeface typeface = TypefaceLoader.get(context, typefaceName);
+                Typeface typeface = TypefaceLoader.getTypeface(context, typefaceName);
                 view.setTypeface(typeface);
                 view.setPaintFlags(view.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
             }
@@ -89,10 +106,17 @@ public class TypefaceLoader {
             a.recycle();
         }
 
-        createLetterSpacing(view.getText());
+
+        Pair<CharSequence, TextView.BufferType> pair = createLetterSpacing(view.getText(), TextView.BufferType.NORMAL);
+
+        // Typeface is null!
+        // Because its called from Constructor!!
+        // So its a super Method call!!!
+        view.setText(pair.first, pair.second);
     }
 
-    public void createLetterSpacing(CharSequence src){
+    public Pair<CharSequence, TextView.BufferType> createLetterSpacing(CharSequence src, TextView.BufferType type){
+        TextView view = this.view.get();
 
         switch (textTransform){
             case LOWERCASE:
@@ -103,7 +127,7 @@ public class TypefaceLoader {
                 break;
 
         }
-        if(letterSpace != NO_LETTER_SPACE && src != null) {
+        if (letterSpace != NO_LETTER_SPACE && src != null) {
             final int srcLength = src.length();
             if (srcLength > 1) {
                 final String nonBreakingSpace = "\u00A0";
@@ -113,16 +137,25 @@ public class TypefaceLoader {
                     builder.insert(i, nonBreakingSpace);
                     builder.setSpan(new ScaleXSpan(letterSpace), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
-
-                view.setAllCaps(false);
-                view.setText(builder, TextView.BufferType.SPANNABLE);
+                if(Build.VERSION.SDK_INT >= 14) {
+                    view.setAllCaps(false);
+                }
+                view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                return new Pair<CharSequence, TextView.BufferType>(builder, TextView.BufferType.SPANNABLE);
             }
         }else if(src != null){
-            if(isHtml){
-                view.setText(Html.fromHtml(src.toString()), TextView.BufferType.SPANNABLE);
+            if (isHtml) {
+
+                view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                return new Pair<CharSequence, TextView.BufferType>( Html.fromHtml(src.toString()), TextView.BufferType.SPANNABLE);
+
             }else if(textTransform != null && textTransform != TRANSFORM.NONE) {
-                view.setText(src, TextView.BufferType.SPANNABLE);
+
+                view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                return new Pair<CharSequence, TextView.BufferType>( src, TextView.BufferType.SPANNABLE);
+
             }
         }
+        return new Pair<CharSequence, TextView.BufferType>(src, type);
     }
 }
