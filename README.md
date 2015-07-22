@@ -87,19 +87,17 @@ Option 2: Use TypefaceLoader and Typefaceable Interface
 import de.morrox.fontinator.utilities.TypefaceLoader;
 import de.morrox.fontinator.utilities.Typefaceable;
 
-public class MyCustomFontButton extends Button implements Typefaceable{
+public class MyCustomFontView extends Button implements Typefaceable{
     private TypefaceLoader typefaceLoader;
-    public FontButton(Context context, AttributeSet attrs) {
+    public MyCustomFontView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        typefaceLoader = new TypefaceLoader(this, context, attrs);
+        typefaceLoader = TypefaceLoader.get(this, context, attrs);
     }
 
     @Override
     public void setText(CharSequence text, BufferType type) {
-        super.setText(text, type);
-        if(type != BufferType.SPANNABLE && typefaceLoader != null){
-            typefaceLoader.createLetterSpacing(text);
-        }
+        Pair<CharSequence, BufferType> pair = TypefaceLoader.inject(typefaceLoader, text, type);
+        super.setText(pair.first, pair.second);
     }
 }
 
