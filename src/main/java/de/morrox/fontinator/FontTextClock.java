@@ -3,6 +3,7 @@ package de.morrox.fontinator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.widget.TextClock;
@@ -23,5 +24,13 @@ public class FontTextClock extends TextClock implements Typefaceable {
     public void setText(CharSequence text, BufferType type) {
         Pair<CharSequence, BufferType> pair = TypefaceLoader.inject(typefaceLoader, text, type);
         super.setText(pair.first, pair.second);
+    }
+
+    public void setFont(String font) {
+        typefaceLoader.setFont(font);
+    }
+
+    public void setFont(@StringRes int font) {
+        typefaceLoader.setFont(getResources().getString(font));
     }
 }

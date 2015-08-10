@@ -24,7 +24,7 @@ import de.morrox.fontinator.R;
 
 
 public class TypefaceLoader {
-    public static enum TRANSFORM {
+    public enum TRANSFORM {
         NONE(0),
         UPPERCASE(1),
         LOWERCASE(2);
@@ -55,7 +55,7 @@ public class TypefaceLoader {
 
     public TypefaceLoader(TextView view, Context context, AttributeSet attrs) {
         this.view = new WeakReference<TextView>(view);
-        setTypeFace(context, attrs);
+        takeTypeface(context, attrs);
     }
 
     private static LruCache<String, Typeface> sTypefaceCache = new LruCache<String, Typeface>(12);
@@ -79,7 +79,7 @@ public class TypefaceLoader {
         }
     }
 
-    public static Pair<CharSequence, TextView.BufferType> inject(TypefaceLoader typefaceLoader, CharSequence src, TextView.BufferType type){
+    public static Pair<CharSequence, TextView.BufferType> inject(TypefaceLoader typefaceLoader, CharSequence src, TextView.BufferType type) {
         if(typefaceLoader == null){
             return new Pair<CharSequence, TextView.BufferType>(src, type);
         }else{
@@ -87,9 +87,12 @@ public class TypefaceLoader {
         }
     }
 
-    private void setTypeFace(Context context, AttributeSet attrs) {
+    public void setFont(String font) {
+        setTypeface(font);
+    }
 
-        TextView view = this.view.get();
+    private void takeTypeface(Context context, AttributeSet attrs) {
+
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.Typefaceable, 0, 0);
         try {
             isHtml        = a.getBoolean(R.styleable.Typefaceable_html, false);
@@ -97,22 +100,27 @@ public class TypefaceLoader {
             textTransform = TRANSFORM.findByValue(a.getInt(R.styleable.Typefaceable_textTransform, TRANSFORM.NONE.value));
 
             String typefaceName = a.getString(R.styleable.Typefaceable_font);
-            if (typefaceName != null && !TextUtils.isEmpty(typefaceName)) {
-                Typeface typeface = TypefaceLoader.getTypeface(context, typefaceName);
-                view.setTypeface(typeface);
-                view.setPaintFlags(view.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
-            }
+            setTypeface(typefaceName);
         } finally {
             a.recycle();
         }
 
-
+        TextView view = this.view.get();
         Pair<CharSequence, TextView.BufferType> pair = createLetterSpacing(view.getText(), TextView.BufferType.NORMAL);
 
         // Typeface is null!
         // Because its called from Constructor!!
         // So its a super Method call!!!
         view.setText(pair.first, pair.second);
+    }
+
+    private void setTypeface(String typefaceName) {
+        TextView view = this.view.get();
+        if (typefaceName != null && !TextUtils.isEmpty(typefaceName)) {
+            Typeface typeface = TypefaceLoader.getTypeface(view.getContext(), typefaceName);
+            view.setTypeface(typeface);
+            view.setPaintFlags(view.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
+        }
     }
 
     public Pair<CharSequence, TextView.BufferType> createLetterSpacing(CharSequence src, TextView.BufferType type){
