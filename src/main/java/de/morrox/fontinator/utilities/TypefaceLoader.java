@@ -141,7 +141,7 @@ public class TypefaceLoader {
                 final String nonBreakingSpace = "\u00A0";
                 final SpannableStringBuilder builder = src instanceof SpannableStringBuilder
                         ? (SpannableStringBuilder) src : new SpannableStringBuilder((isHtml) ? Html.fromHtml(src.toString()) : src);
-                for (int i = src.length() - 1; i >= 1; i--) {
+                for (int i = builder.length() - 1; i >= 1; i--) {
                     builder.insert(i, nonBreakingSpace);
                     builder.setSpan(new ScaleXSpan(letterSpace), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
@@ -155,12 +155,12 @@ public class TypefaceLoader {
             if (isHtml) {
 
                 view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                return new Pair<CharSequence, TextView.BufferType>( Html.fromHtml(src.toString()), TextView.BufferType.SPANNABLE);
+                return new Pair<CharSequence, TextView.BufferType>(Html.fromHtml(src.toString()), TextView.BufferType.SPANNABLE);
 
             }else if(textTransform != null && textTransform != TRANSFORM.NONE) {
 
                 view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                return new Pair<CharSequence, TextView.BufferType>( src, TextView.BufferType.SPANNABLE);
+                return new Pair<CharSequence, TextView.BufferType>(src, TextView.BufferType.SPANNABLE);
 
             }
         }

@@ -1,13 +1,62 @@
+def libVersionCode = 4
+def libVersionName = '1.1.3'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
+
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'de.morrox.fontinator'
+    bintrayName = 'Fontinator'
+
+    publishedGroupId = 'de.morrox.fontinator'
+    libraryName = 'Fontinator'
+    artifact = 'Fontinator'
+
+    libraryDescription = 'Fontinator is an Android-Library that make it simply easy to use custom Fonts.'
+
+    siteUrl = 'https://www.morrox.de/'
+    gitUrl = 'https://github.com/svendvd/Fontinator.git'
+
+    libraryVersion = libVersionName
+
+    developerId = 'svendvd'
+    developerName = 'Sven Nähler'
+    developerEmail = 'svendvd@googlemail.com'
+
+    licenseName = 'MIT'
+    licenseUrl = 'https://github.com/svendvd/Fontinator/blob/master/LICENSE.md'
+    allLicenses = ['MIT']
+
+}
+
+
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
     defaultConfig {
         minSdkVersion 12
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 23
+        versionCode libVersionCode
+        versionName libVersionName
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -25,6 +74,68 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-annotations:22.2.0'
+    compile 'com.android.support:support-annotations:23.3.0'
     //compile 'com.android.support:appcompat-v7:21.0.2'
+}
+
+
+
+task aggregateJavadocs(type: Javadoc) {
+
+    exclude '**/ly/img/android/**'
+}
+
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+
+apply plugin: 'com.jfrog.bintray'
+
+version = libraryVersion
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// Bintray
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = libraryDescription
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
+            }
+        }
+    }
 }
